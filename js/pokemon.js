@@ -32,6 +32,9 @@ var input = document.getElementById("caixaDeTexto");
 input.addEventListener("keydown", function(event) {
     // Number 13 is the "Enter" key on the keyboard
     if (event.keyCode === 13) {
+        if (document.getElementById("caixaDeTexto").value == null) {
+            return alert('Digite o nome ou o número do pokémon')
+        }
         limparEvolucoes();
         document.getElementById("botaoPesquisa").click();
 
@@ -266,6 +269,9 @@ function pegarInformacaoBasica(resposta) {
 }
 
 function main(resposta) {
+    if (document.getElementById("caixaDeTexto").value == '') {
+        return alert('Digite o nome ou o número do pokémon')
+    }
     limparEvolucoes();
     let input = document.getElementById('caixaDeTexto').value.toLowerCase();
     console.log(input)
