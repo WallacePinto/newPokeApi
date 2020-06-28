@@ -206,10 +206,10 @@ function pegarInformacaoDasHabilidades(urlAbilities) {
 function pegarInformacoesDoTipo(tipos) {
     let types = tipos;
     if (types[1] != undefined) {
-        document.getElementById('tipo0').innerHTML = `${spanTipos[types[0]]}`;
-        document.getElementById('tipo1').innerHTML = `${spanTipos[types[1]]}`;
+        document.getElementById('tipo0').innerHTML = `Type: ${spanTipos[types[0]]}`;
+        document.getElementById('tipo1').innerHTML = `Type: ${spanTipos[types[1]]}`;
     } else {
-        document.getElementById('tipo0').innerHTML = `${spanTipos[types[0]]}`;
+        document.getElementById('tipo0').innerHTML = `Type: ${spanTipos[types[0]]}`;
     }
     types.forEach((tipo, index) => {
         axios.get(`https://pokeapi.co/api/v2/type/${tipo}`)
@@ -232,7 +232,7 @@ function pegarInformacoesDoTipo(tipos) {
                 No Damage To: ${noDamageTo} <br>
                 Half Damage To: ${halfDamageTo} <br>
                 Double Damage To: ${doubleDamageTo}
-                <br><hr><br> 
+                <br><hr>
                 No Damage From: ${noDamageFrom} <br>
                 Half Damage From: ${halfDamageFrom} <br>
                 Double Damage From: ${doubleDamageFrom}`;
