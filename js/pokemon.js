@@ -108,7 +108,6 @@ function pegarEvolucao(urlSpecies) {
         .then(respota => {
             pegaDescricaoPokemon(respota);
             let urlEvolucao = respota.data.evolution_chain.url;
-            console.log(urlEvolucao)
             axios.get(urlEvolucao)
                 .then(resposta1 => {
                     let evolve2 = [],
@@ -171,7 +170,7 @@ function pegarEvolucao(urlSpecies) {
                         })
                     } else {
                         document.getElementById(`pokemonTerceiraEvolucaoNome0`).innerText = '';
-                        document.getElementById('setaDois').style = 'display: none'
+                        document.getElementById('setaDois').style = 'display: none';
                     }
                 })
         })
@@ -229,7 +228,6 @@ function pegarInformacoesDoTipo(tipos) {
                 danos.no_damage_from.forEach((noFrom => noDamageFrom += ` ${spanTipos[tipoArr.indexOf(noFrom.name)]}`));
                 danos.half_damage_from.forEach((halfFrom => halfDamageFrom += ` ${spanTipos[tipoArr.indexOf(halfFrom.name)]}`));
                 danos.double_damage_from.forEach((doubleFrom => doubleDamageFrom += ` ${spanTipos[tipoArr.indexOf(doubleFrom.name)]}`));
-
                 document.getElementById(`corpoTipo${index}`).innerHTML = `
                 No Damage To: ${noDamageTo} <br>
                 Half Damage To: ${halfDamageTo} <br>
