@@ -108,7 +108,7 @@ function pegarEvolucao(urlSpecies) {
         .then(respota => {
             pegaDescricaoPokemon(respota);
             let urlEvolucao = respota.data.evolution_chain.url;
-            console.log()
+            console.log(urlEvolucao)
             axios.get(urlEvolucao)
                 .then(resposta1 => {
                     let evolve2 = [],
@@ -117,7 +117,9 @@ function pegarEvolucao(urlSpecies) {
                     if (resposta1.data.chain.evolves_to.length != 0) {
                         document.getElementById('setaUm').style = ''
                         resposta1.data.chain.evolves_to.forEach((segunda) => { evolve2.push(segunda.species.name) })
-                        if (resposta1.data.chain.evolves_to[0].evolves_to[0] != undefined) { resposta1.data.chain.evolves_to[0].evolves_to.forEach((terceira) => { evolve3.push(terceira.species.name) }) }
+                        if (resposta1.data.chain.evolves_to[0].evolves_to[0] != undefined) {
+                            resposta1.data.chain.evolves_to.forEach(segundaRede => { segundaRede.evolves_to.forEach(terceira => { evolve3.push(terceira.species.name) }) })
+                        }
                     } else {
                         document.getElementById('setaUm').style = 'display: none'
                         document.getElementById(`pokemonSegundaEvolucaoNome0`).innerText = '';
