@@ -32,7 +32,9 @@ var input = document.getElementById("caixaDeTexto");
 input.addEventListener("keydown", function(event) {
     // Number 13 is the "Enter" key on the keyboard
     if (event.keyCode === 13) {
+        limparEvolucoes();
         document.getElementById("botaoPesquisa").click();
+
     }
 });
 
@@ -80,6 +82,147 @@ function organizaListagem() {
     listaPokemon = listaPokemonDesordenada.sort(compare)
 }
 
+function pegarEvolucao(urlSpecies) {
+    let urlInicial = urlSpecies;
+    axios.get(urlInicial)
+        .then(respota => {
+            let urlEvolucao = respota.data.evolution_chain.url;
+            console.log()
+            axios.get(urlEvolucao)
+                .then(resposta1 => {
+                    let evolve2 = [],
+                        evolve3 = [];
+                    let evolve1 = resposta1.data.chain.species.name;
+                    if (resposta1.data.chain.evolves_to.length != 0) {
+                        document.getElementById('setaUm').style = ''
+                        resposta1.data.chain.evolves_to.forEach((segunda) => { evolve2.push(segunda.species.name) })
+                        if (resposta1.data.chain.evolves_to[0].evolves_to[0] != undefined) { resposta1.data.chain.evolves_to[0].evolves_to.forEach((terceira) => { evolve3.push(terceira.species.name) }) }
+                    } else {
+                        document.getElementById('setaUm').style = 'display: none'
+                        document.getElementById(`pokemonSegundaEvolucaoNome0`).innerText = '';
+                    }
+
+                    if (evolve2.length > 4) { document.getElementById('variasEvolucoes').style = '' } else { document.getElementById('variasEvolucoes').style = 'display: none' }
+
+                    document.getElementById(`volteMaisTarde`).innerText = '';
+
+                    axios.get(`https://pokeapi.co/api/v2/pokemon/${evolve1}`)
+                        .then(resposta => {
+                            let nome = capitalize(resposta.data.name);
+                            let numero = resposta.data.id.toString();
+                            if (numero.length == 1) { numero = `00${numero}` }
+                            if (numero.length == 2) { numero = `0${numero}` }
+                            let sprite = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${numero}.png`
+                            document.getElementById('pokemonPrimeiraEvolucao').src = sprite;
+                            document.getElementById('pokemonPrimeiraEvolucaoNome').innerText = `${nome}`;
+
+                        })
+
+                    if (evolve2.length != 0) {
+                        evolve2.forEach((evolucao, index) => {
+                            axios.get(`https://pokeapi.co/api/v2/pokemon/${evolucao}`)
+                                .then(resposta => {
+                                    let nome = capitalize(resposta.data.name);
+                                    let numero = resposta.data.id.toString();
+                                    if (numero.length == 1) { numero = `00${numero}` }
+                                    if (numero.length == 2) { numero = `0${numero}` }
+                                    let sprite = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${numero}.png`
+                                    document.getElementById(`pokemonSegundaEvolucao${index}`).src = sprite;
+                                    document.getElementById(`pokemonSegundaEvolucaoNome${index}`).innerText = `${nome}`;
+                                })
+                        })
+                    }
+                    console.log(evolve3)
+                    if (evolve3.length != 0) {
+                        evolve3.forEach((evolucao, index) => {
+                            axios.get(`https://pokeapi.co/api/v2/pokemon/${evolucao}`)
+                                .then(resposta => {
+                                    document.getElementById('setaDois').style = ''
+                                    let nome = capitalize(resposta.data.name);
+                                    let numero = resposta.data.id.toString();
+                                    if (numero.length == 1) { numero = `00${numero}` }
+                                    if (numero.length == 2) { numero = `0${numero}` }
+                                    let sprite = `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${numero}.png`
+                                    document.getElementById(`pokemonTerceiraEvolucao${index}`).src = sprite;
+                                    document.getElementById(`pokemonTerceiraEvolucaoNome${index}`).innerText = `${nome}`;
+                                })
+                        })
+                    } else {
+                        document.getElementById(`pokemonTerceiraEvolucaoNome0`).innerText = '';
+                        document.getElementById('setaDois').style = 'display: none'
+                    }
+                })
+        })
+}
+
+function limparEvolucoes() {
+    for (let i = 0; i < 8; i++) {
+        document.getElementById(`pokemonSegundaEvolucao${i}`).src = ' ';
+        document.getElementById(`pokemonSegundaEvolucaoNome${i}`).innerText = ' ';
+    }
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(`pokemonTerceiraEvolucao${i}`).src = '';
+        document.getElementById(`pokemonTerceiraEvolucaoNome${i}`).innerText = '';
+    }
+}
+
+function pegarInformacaoDasHabilidades(urlAbilities) {
+    let url = urlAbilities;
+    url.forEach((habilidade, index) => {
+        axios.get(url[index])
+            .then(resposta => {
+                resposta.data.effect_entries.forEach(lingua => {
+                    if (lingua.language.name == 'en') {
+                        document.getElementById(`corpo${index}`).innerText = lingua.effect;
+                    }
+                })
+            })
+            .catch(function(erro) {
+                console.log(erro)
+            })
+    })
+}
+
+function pegarInformacoesDoTipo(tipos) {
+    let types = tipos;
+    if (types[1] != undefined) {
+        document.getElementById('tipo0').innerHTML = `${spanTipos[types[0]]}`;
+        document.getElementById('tipo1').innerHTML = `${spanTipos[types[1]]}`;
+    } else {
+        document.getElementById('tipo0').innerHTML = `${spanTipos[types[0]]}`;
+    }
+    types.forEach((tipo, index) => {
+        axios.get(`https://pokeapi.co/api/v2/type/${tipo}`)
+            .then(resposta => {
+                let noDamageTo = '',
+                    halfDamageTo = '',
+                    doubleDamageTo = '',
+                    noDamageFrom = '',
+                    halfDamageFrom = '',
+                    doubleDamageFrom = '';
+                let danos = resposta.data.damage_relations
+                danos.no_damage_to.forEach((noTo => noDamageTo += ` ${spanTipos[tipoArr.indexOf(noTo.name)]}`))
+                danos.half_damage_to.forEach((halfTo => halfDamageTo += ` ${spanTipos[tipoArr.indexOf(halfTo.name)]}`));
+                danos.double_damage_to.forEach((doubleTo => doubleDamageTo += ` ${spanTipos[tipoArr.indexOf(doubleTo.name)]}`));
+                danos.no_damage_from.forEach((noFrom => noDamageFrom += ` ${spanTipos[tipoArr.indexOf(noFrom.name)]}`));
+                danos.half_damage_from.forEach((halfFrom => halfDamageFrom += ` ${spanTipos[tipoArr.indexOf(halfFrom.name)]}`));
+                danos.double_damage_from.forEach((doubleFrom => doubleDamageFrom += ` ${spanTipos[tipoArr.indexOf(doubleFrom.name)]}`));
+
+                document.getElementById(`corpoTipo${index}`).innerHTML = `
+                No Damage To: ${noDamageTo} <br>
+                Half Damage To: ${halfDamageTo} <br>
+                Double Damage To: ${doubleDamageTo}
+                <br><hr><br> 
+                No Damage From: ${noDamageFrom} <br>
+                Half Damage From: ${halfDamageFrom} <br>
+                Double Damage From: ${doubleDamageFrom}`;
+            })
+            .catch(function(erro) {
+                console.log(erro)
+            })
+    })
+
+}
 
 function pegarInformacaoBasica(resposta) {
     let nome = capitalize(resposta.data.name);
@@ -90,55 +233,42 @@ function pegarInformacaoBasica(resposta) {
 
     document.getElementById('fotoPokemon').src = sprite;
     document.getElementById('nomePokemon').innerText = nome;
+    document.getElementById('pokemonTitulo').innerText = nome;
     document.getElementById('numeroPokemon').innerText = `Nº${numero}`;
+
 
     let types = []
     resposta.data.types.forEach(tipos => types.push(tipoArr.indexOf(tipos.type.name)))
-    if (types[1] != undefined) { document.getElementById('tipoPokemon').innerHTML = `${spanTipos[types[0]]} | ${spanTipos[types[1]]}`; }
-    if (types[1] == undefined) { document.getElementById('tipoPokemon').innerHTML = `${spanTipos[types[0]]}` }
+    if (types[1] != undefined) { document.getElementById('tipoPokemon').innerHTML = `<a data-toggle="modal" data-target="#Type0">${spanTipos[types[0]]}</a> | <a data-toggle="modal" data-target="#Type1">${spanTipos[types[1]]}</a>`; }
+    if (types[1] == undefined) { document.getElementById('tipoPokemon').innerHTML = `<a data-toggle="modal" data-target="#Type0">${spanTipos[types[0]]}</a>` }
 
     let abilities = [];
     let urlAbilities = [];
-    let string = ''
     resposta.data.abilities.forEach((habilidades, index) => abilities.push((habilidades.ability.name)))
     resposta.data.abilities.forEach((habilidades, index) => urlAbilities.push((habilidades.ability.url)))
+
+    let habilidadeEstilo = ''
     abilities.forEach((habilidade, index) => {
-        string += `<a data-toggle="modal" data-target="#exampleModal${index}">${ab1}${habilidade}${ab2}</a> `;
+        habilidadeEstilo += `<a data-toggle="modal" data-target="#exampleModal${index}">${ab1}${habilidade}${ab2}</a> `;
     });
+
     document.getElementById('abilitiesTextoOculto').innerText = "Abilities";
-    document.getElementById('habilidadesPokemon').innerHTML = `${string}`;
-    console.log(abilities)
-    abilities.forEach((habilities, index) => { document.getElementById(`habilidade${index}`).innerText = capitalize(habilities) })
-    return urlAbilities;
-}
+    document.getElementById('habilidadesPokemon').innerHTML = `${habilidadeEstilo}`;
 
-async function pegarInformacaoDasHabilidades(urlAbilities) {
-    let url = urlAbilities;
-    var descricaoHabilidade = [];
-    await url.forEach((habilidade, index) => {
-        axios.get(url[index])
-            .then(resposta => {
-                resposta.data.effect_entries.forEach(country => {
-                    if (country.language.name == 'en') {
-                        descricaoHabilidade.push(country.effect);
-                        document.getElementById(`corpo${index}`).innerText = country.effect;
-                    }
-                })
-            })
-    })
-}
+    abilities.forEach((habilities, index) => { document.getElementById(`habilidade${index}`).innerText = capitalize(habilities) });
 
-function pegaInformacoes(resposta) {
-    let abilities = pegarInformacaoBasica(resposta);
-    pegarInformacaoDasHabilidades(abilities);
-}
+    pegarInformacaoDasHabilidades(urlAbilities);
+    pegarInformacoesDoTipo(types);
+    pegarEvolucao(resposta.data.species.url, nome);
 
+}
 
 function main(resposta) {
+    limparEvolucoes();
     let input = document.getElementById('caixaDeTexto').value.toLowerCase();
     axios.get(`https://pokeapi.co/api/v2/pokemon/${input}`)
         .then(resposta => {
-            pegaInformacoes(resposta);
+            pegarInformacaoBasica(resposta);
         })
         .catch(function(erro) {
             console.log(erro)

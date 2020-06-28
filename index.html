@@ -80,7 +80,7 @@
                         <div class="banner-content" style="text-align: center;">
                             <h1>Escolha o seu <br> Pokémon</h1>
                             <div class="ui-widget">
-                                <input id="caixaDeTexto" type="text" onclick="organizaListagem()" onkeydown="organizaListagem()" style="width: 300px; height: 50px;">
+                                <input id="caixaDeTexto" placeholder="Digite o Nome ou o Número" type="text" onclick="organizaListagem()" onkeydown="organizaListagem()" style="width: 300px; height: 50px;">
                                 <br>
                                 <img id="pic">
                             </div>
@@ -91,13 +91,13 @@
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-4" style="text-align: center;">
                         <br><br><br><br>
-                        <img id="fotoPokemon" src="./img/pokebola.png" alt="" style="width: 80%; height: auto;">
+                        <a data-toggle="modal" data-target="#PokemonInfos"><img id="fotoPokemon" src="./img/pokebola.png" alt="" style="width: 70%; height: auto;"></a>
                         <div style="text-align: center;">
                             <p id="nomePokemon" style="font-size: 20px; font-weight: bolder;"><br></p>
                             <p id="numeroPokemon" style="font-size: 18px;"><br></p>
                             <p id="tipoPokemon"><br></p>
                             <p id="abilitiesTextoOculto" style="font-size: 20px; font-weight:bolder;"></p>
-                            <p id="habilidadesPokemon" style="font-size: 18px; "><br></p>
+                            <p id="habilidadesPokemon" style="font-size: 18px; line-height: 35px;"><br></p>
                         </div>
                     </div>
                 </div>
@@ -111,8 +111,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="habilidade0">Modal title</h5>
-                        <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <p id="corpo0"></p>
@@ -130,8 +128,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="habilidade1">Modal title</h5>
-                        <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body" id="corpo1">
                         ...
@@ -149,8 +145,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="habilidade2">Modal title</h5>
-                        <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body" id="corpo2">
                         ...
@@ -162,21 +156,168 @@
             </div>
         </div>
 
-        <!-- JQuery-->
+        <!-- Modal 1 Type -->
+        <div class="modal fade" id="Type0" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tipo0">Modal title</h5>
+                    </div>
+                    <div class="modal-body" id="corpoTipo0" style="line-height: 35px;">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script src=" jquery/jquery.slim.js "></script>
+        <!-- Modal 2 Type -->
+        <div class="modal fade" id="Type1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tipo1">Modal title</h5>
+                    </div>
+                    <div class="modal-body" id="corpoTipo1" style="line-height: 35px;">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <script src="https://code.jquery.com/jquery-1.12.4.js "></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js "></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js " integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4 " crossorigin="anonymous "></script>
-        <script src="js/vendor/bootstrap.min.js "></script>
+        <!-- Modal Pokemon Infos -->
+        <div class="modal fade" id="PokemonInfos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="pokemonTitulo">Pokémon Info</h5>
+                    </div>
+                    <div class="modal-body" id="pokemonCorpo" style="line-height: 35px; text-align: center;">
+                        <p id="volteMaisTarde">Volte para tela inicial e digite o nome ou númeor de um pokémon no campo buscar.</p>
 
-        <script src="https://unpkg.com/axios/dist/axios.min.js "></script>
-        <script src="js/pokemon.js "></script>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-3">
+                                    <p>EVOLVE</p>
+                                </div>
+                                <div class="col-3">
+                                </div>
+                                <div class="col-4">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <img id="pokemonPrimeiraEvolucao" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonPrimeiraEvolucaoNome"></p>
+                                </div>
+                                <div class="col-3">
+                                </div>
+                                <div class="col-3">
+                                </div>
+                                <div class="col-3">
+                                </div>
+                            </div>
+                            <div id="setaUm" class="row" style="display: none;">
+                                <div class="col-3">
+                                    <img src="https://cdn.icon-icons.com/icons2/1674/PNG/512/arrowheaddown_110942.png" style="width: 50px; height: auto; margin-left: 20px;">
+                                </div>
+                                <div class="col-3"></div>
+                                <div class="col-3"></div>
+                                <div class="col-3"></div>
+                            </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+                            <div class="row">
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao0" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome0"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao1" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome1"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao2" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome2"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao3" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome3"></p>
+                                </div>
+
+                            </div>
+                            <div id="variasEvolucoes" class="row" style="display: none;">
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao4" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome4"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao5" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome5"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao6" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome6"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonSegundaEvolucao7" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonSegundaEvolucaoNome7"></p>
+                                </div>
+                            </div>
+                            <div id="setaDois" class="row" style="display: none">
+                                <div class="col-3">
+                                    <img src="https://cdn.icon-icons.com/icons2/1674/PNG/512/arrowheaddown_110942.png" style="width: 50px; height: auto; margin-left: 20px;">
+                                </div>
+                                <div class="col-3"></div>
+                                <div class="col-3"></div>
+                                <div class="col-3"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <img id="pokemonTerceiraEvolucao0" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonTerceiraEvolucaoNome0"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonTerceiraEvolucao1" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonTerceiraEvolucaoNome1"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonTerceiraEvolucao2" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonTerceiraEvolucaoNome2"></p>
+                                </div>
+                                <div class="col-3">
+                                    <img id="pokemonTerceiraEvolucao3" src="" alt="" style="width: 100%; height: auto;">
+                                    <p id="pokemonTerceiraEvolucaoNome3"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JQuery-->
+
+            <script src=" jquery/jquery.slim.js "></script>
+
+            <script src="https://code.jquery.com/jquery-1.12.4.js "></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js "></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js " integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4 " crossorigin="anonymous "></script>
+            <script src="js/vendor/bootstrap.min.js "></script>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js "></script>
+            <script src="js/pokemon.js "></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js " integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI " crossorigin="anonymous "></script>
 
 </body>
 
