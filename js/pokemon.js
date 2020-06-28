@@ -85,10 +85,28 @@ function organizaListagem() {
     listaPokemon = listaPokemonDesordenada.sort(compare)
 }
 
+function pegaDescricaoPokemon(resposta) {
+    let flavorText = resposta.data.flavor_text_entries
+    flavorText.forEach(texto => {
+        if (texto.language.name == 'en') {
+            if (texto.version.name == 'ultra-sun') {
+                let text = texto.flavor_text.toString();
+                document.getElementById('evolve').style = 'font-weight: bolder; font-size: 15px';
+                document.getElementById('volteMaisTarde').innerHTML = text;
+            } else if (texto.version.name == 'x') {
+                let text = texto.flavor_text.toString();
+                document.getElementById('evolve').style = 'font-weight: bolder; font-size: 15px';
+                document.getElementById('volteMaisTarde').innerHTML = text;
+            }
+        }
+    })
+}
+
 function pegarEvolucao(urlSpecies) {
     let urlInicial = urlSpecies;
     axios.get(urlInicial)
         .then(respota => {
+            pegaDescricaoPokemon(respota);
             let urlEvolucao = respota.data.evolution_chain.url;
             console.log()
             axios.get(urlEvolucao)
@@ -107,10 +125,7 @@ function pegarEvolucao(urlSpecies) {
 
                     if (evolve2.length > 4) { document.getElementById('variasEvolucoes').style = '' } else { document.getElementById('variasEvolucoes').style = 'display: none' }
 
-                    document.getElementById(`volteMaisTarde`).innerText = '';
-
                     if (evolve1 == 'oricorio') { evolve1 = 'oricorio-baile' }
-                    console.log(evolve1)
 
                     axios.get(`https://pokeapi.co/api/v2/pokemon/${evolve1}`)
                         .then(resposta => {
@@ -138,7 +153,6 @@ function pegarEvolucao(urlSpecies) {
                                 })
                         })
                     }
-                    console.log(evolve3)
                     if (evolve3.length != 0) {
                         evolve3.forEach((evolucao, index) => {
                             axios.get(`https://pokeapi.co/api/v2/pokemon/${evolucao}`)
@@ -239,6 +253,7 @@ function pegarInformacaoBasica(resposta) {
 
     document.getElementById('fotoPokemon').src = sprite;
     document.getElementById('nomePokemon').innerText = nome;
+    document.getElementById('pokemonTitulo').innerText = `${nome} - Infos`;
     document.getElementById('numeroPokemon').innerText = `Nº${numero}`;
 
 
@@ -274,7 +289,6 @@ function main(resposta) {
     }
     limparEvolucoes();
     let input = document.getElementById('caixaDeTexto').value.toLowerCase();
-    console.log(input)
     axios.get(`https://pokeapi.co/api/v2/pokemon/${input}`)
         .then(resposta => {
             pegarInformacaoBasica(resposta);
